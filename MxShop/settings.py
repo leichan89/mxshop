@@ -150,3 +150,5 @@ STATIC_URL = '/static/'
 
 # 重载系统的用户，让UserProfile生效/MxShop/apps/users/models/UserProfile
 AUTH_USER_MODEL = 'users.UserProfile'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
