@@ -19,7 +19,7 @@ class ShoppingCart(models.Model):
         verbose_name = "购物车"
         verbose_name_plural = verbose_name
         # 表示每行的用户和商品必须唯一，否则报错
-        unique_together = ("User", "goods")
+        unique_together = ("user", "goods")
 
     def __str__(self):
         return f"{self.goods.name}({str(self.nums)})"
