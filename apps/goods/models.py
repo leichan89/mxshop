@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 from DjangoUeditor.models import UEditorField
 
 class GoodsCategory(models.Model):
@@ -22,7 +23,7 @@ class GoodsCategory(models.Model):
     parent_category = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
 
     is_tab = models.BooleanField("是否导航", default=False, help_text="是否导航")
-    add_time = models.DateTimeField("添加时间", auto_now_add=True)
+    add_time = models.DateTimeField("添加时间", default=datetime.now)
 
     class Meta:
         verbose_name = "商品类别"
@@ -60,7 +61,7 @@ class Goods(models.Model):
     # 是否是热销商品，可以自行设置
     is_hot = models.BooleanField("是否热销", default=False)
 
-    add_time = models.DateTimeField("添加时间", auto_now_add=True)
+    add_time = models.DateTimeField("添加时间", default=datetime.now)
 
     class Meta:
         verbose_name = "商品信息"
@@ -78,7 +79,7 @@ class GoodsImage(models.Model):
     # 获取这个商品对应的图片信息
     goods = models.ForeignKey(Goods, on_delete=models.CASCADE, verbose_name="商品", related_name="image")
     image = models.ImageField(upload_to="", verbose_name="图片", null=True, blank=True)
-    add_time = models.DateTimeField("添加时间", auto_now_add=True)
+    add_time = models.DateTimeField("添加时间", default=datetime.now)
 
     class Meta:
         verbose_name = "商品轮播"
@@ -95,7 +96,7 @@ class Banner(models.Model):
     goods = models.ForeignKey(Goods, on_delete=models.CASCADE, verbose_name="商品")
     image = models.ImageField(upload_to="banner", verbose_name="轮播图片")
     index = models.IntegerField("轮播顺序", default=0)
-    add_time = models.DateTimeField("添加时间", auto_now_add=True)
+    add_time = models.DateTimeField("添加时间", default=datetime.now)
 
     class Meta:
         verbose_name = "首页轮播"
@@ -126,7 +127,7 @@ class HotSearchWords(models.Model):
     """
     keywords = models.CharField("热搜词", default="", max_length=20)
     index = models.IntegerField("排序", default=0)
-    add_time = models.DateTimeField("添加时间", auto_now_add=True)
+    add_time = models.DateTimeField("添加时间", default=datetime.now)
 
     class Meta:
         verbose_name = "热搜排行"
