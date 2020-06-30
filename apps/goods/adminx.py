@@ -8,6 +8,9 @@ from .models import Goods, GoodsCategory, GoodsImage, GoodsCategoryBrand, Banner
 from .models import IndexAd
 
 class GoodsAdmin(object):
+    """
+    导航栏：商品管理-商品信息
+    """
     # 显示的列，获取数据库中所有商品的信息
     list_display = ["name", "click_num", "sold_num", "fav_num", "goods_num", "market_price",
                     "shop_price", "goods_brief", "goods_desc", "is_new", "is_hot", "add_time"]
@@ -29,17 +32,24 @@ class GoodsAdmin(object):
     class GoodsImagesInline(object):
         model = GoodsImage
         exclude = ["add_time"]
+        # 默认显示的条目数
         extra = 1
         style = "tab"
 
     inlines = [GoodsImagesInline]
 
 class GoodsCategoryAdmin(object):
+    """
+    导航栏：商品管理-商品类别
+    """
     list_display = ["name", "category_type", "parent_category", "add_time"]
     list_filter = ["category_type", "parent_category", "name"]
     search_fields = ["name", ]
 
 class GoodsBrandAdmin(object):
+    """
+    导航栏：商品管理-首页轮播
+    """
     list_display = ["category", "image", "name", "desc"]
 
     def get_context(self):
@@ -49,12 +59,21 @@ class GoodsBrandAdmin(object):
         return context
 
 class BannerGoodsAdmin(object):
+    """
+    导航栏：商品管理-宣传品牌
+    """
     list_display = ["goods", "image", "index"]
 
 class HotSearchAdmin(object):
+    """
+    导航栏：商品管理-热搜排行
+    """
     list_display = ["keywords", "index", "add_time"]
 
 class IndexAdAdmin(object):
+    """
+    导航栏：商品管理-首页广告
+    """
     list_display = ["category", "goods"]
 
 
