@@ -87,7 +87,6 @@ class Goods(models.Model):
     def __str__(self):
         return self.name
 
-
 class GoodsImage(models.Model):
     # 先找到商品
     # goods = Goods.objects.filter(code = 100).first()
@@ -105,7 +104,6 @@ class GoodsImage(models.Model):
     def __str__(self):
         return self.goods.name
 
-
 class Banner(models.Model):
     """
     首页轮播商品
@@ -122,7 +120,6 @@ class Banner(models.Model):
     def __str__(self):
         return self.goods.name
 
-
 class IndexAd(models.Model):
     """
     商品广告
@@ -136,7 +133,6 @@ class IndexAd(models.Model):
 
     def __str__(self):
         return self.goods.name
-
 
 class HotSearchWords(models.Model):
     """

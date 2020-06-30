@@ -8,7 +8,7 @@ from .models import Goods, GoodsCategory, GoodsImage, GoodsCategoryBrand, Banner
 from .models import IndexAd
 
 class GoodsAdmin(object):
-    # 显示的列
+    # 显示的列，获取数据库中所有商品的信息
     list_display = ["name", "click_num", "sold_num", "fav_num", "goods_num", "market_price",
                     "shop_price", "goods_brief", "goods_desc", "is_new", "is_hot", "add_time"]
 
@@ -25,8 +25,7 @@ class GoodsAdmin(object):
     # 富文本编辑器
     style_fields = {"goods_desc": "ueditor"}
 
-    # 在添加商品的时候可以添加商品图片
-
+    # 在添加商品的时候可以添加商品图片（商品轮播GoodsImage）
     class GoodsImagesInline(object):
         model = GoodsImage
         exclude = ["add_time"]
@@ -40,7 +39,6 @@ class GoodsCategoryAdmin(object):
     list_filter = ["category_type", "parent_category", "name"]
     search_fields = ["name", ]
 
-
 class GoodsBrandAdmin(object):
     list_display = ["category", "image", "name", "desc"]
 
@@ -53,10 +51,8 @@ class GoodsBrandAdmin(object):
 class BannerGoodsAdmin(object):
     list_display = ["goods", "image", "index"]
 
-
 class HotSearchAdmin(object):
     list_display = ["keywords", "index", "add_time"]
-
 
 class IndexAdAdmin(object):
     list_display = ["category", "goods"]
