@@ -43,7 +43,7 @@ class UserAddress(models.Model):
         return self.address
 
 
-class UserLeavingMeaasge(models.Model):
+class UserLeavingMessage(models.Model):
     """
     用户留言
     """

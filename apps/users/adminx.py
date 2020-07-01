@@ -18,12 +18,15 @@ class GlobalSetting(object):
     """
     全局配置，后台管理标题和页脚
     """
-    site_title = "大神教程"
+    site_title = "OG大哥大"
     site_footer = "https://github.com/derek-zhang123/MxShop"
     # 菜单收缩
     menu_style = "accordion"
 
 class VerifyCodeAdmin(object):
+    """
+    导航栏：用户管理-短信验证
+    """
     list_display = ['code', 'mobile', 'add_time']
 
 

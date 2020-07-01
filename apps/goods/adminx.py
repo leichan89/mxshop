@@ -15,7 +15,7 @@ class GoodsAdmin(object):
     list_display = ["name", "click_num", "sold_num", "fav_num", "goods_num", "market_price",
                     "shop_price", "goods_brief", "goods_desc", "is_new", "is_hot", "add_time"]
 
-    # 可以搜索的字段
+    # 可以搜索的字段:使用这个属性列出来的字段关键字来搜索数据
     search_fields = ["name"]
 
     # 列表页可以直接编辑的
@@ -34,6 +34,8 @@ class GoodsAdmin(object):
         exclude = ["add_time"]
         # 默认显示的条目数
         extra = 1
+        # 对应文件中xadmin/plugins/inline.py
+        # 显示上传图片的按钮的样式，没有其他作用：accordion，tab，one
         style = "tab"
 
     inlines = [GoodsImagesInline]
@@ -48,19 +50,20 @@ class GoodsCategoryAdmin(object):
 
 class GoodsBrandAdmin(object):
     """
-    导航栏：商品管理-首页轮播
+    导航栏：商品管理-宣传品牌
     """
     list_display = ["category", "image", "name", "desc"]
 
     def get_context(self):
         context = super(GoodsBrandAdmin, self).get_context()
         if 'form' in context:
+            # 商品类目下拉框只显示类别是1的类别
             context['form'].fields['category'].queryset = GoodsCategory.objects.filter(category_type=1)
         return context
 
 class BannerGoodsAdmin(object):
     """
-    导航栏：商品管理-宣传品牌
+    导航栏：商品管理-首页轮播商品
     """
     list_display = ["goods", "image", "index"]
 
