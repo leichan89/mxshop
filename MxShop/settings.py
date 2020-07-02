@@ -154,3 +154,12 @@ AUTH_USER_MODEL = 'users.UserProfile'
 # 设置存放文件的路径的url
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+REST_FRAMEWORK = {
+    # 分页
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 每页显示的个数
+    'PAGE_SIZE': '10',
+    # 指定排序参数的名称
+    'ORDERING_PARAM': 'orderby',
+}

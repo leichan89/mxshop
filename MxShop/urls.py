@@ -13,15 +13,20 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-# from django.contrib import admin
 from django.urls import path, include
 import xadmin
 from django.views.static import serve
 from MxShop.settings import MEDIA_ROOT
+from rest_framework.documentation import include_docs_urls
+
 
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),
     path('ueditor/', include('DjangoUeditor.urls')),
     # 在目录结构中指定的位置下提供静态文件。
-    path('media/<path:path>', serve, {'document_root': MEDIA_ROOT})
+    path('media/<path:path>', serve, {'document_root': MEDIA_ROOT}),
+    path('docs', include_docs_urls(title='OG大哥大')),
+    path('api-auth/', include('rest_framework.urls')),
+    # 商品信息
+    path('', include('goods.urls')),
 ]
