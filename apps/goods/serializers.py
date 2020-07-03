@@ -14,7 +14,7 @@ from common.tools import Tools
 
 class TimestampField(Field):
     """
-    修改模型中的某个字段
+    修改模型中的某个字段，在模型序列化类中需要知道字段的来源
     """
 
     def to_representation(self, value):
