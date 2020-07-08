@@ -68,4 +68,5 @@ class GoodsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     # '$'正则表达式搜索。
     # 默认情况下，搜索参数被命名为 'search'，但这可能会被 SEARCH_PARAM 设置覆盖。
     # name和goods_brief是goods模型中的字段
+    # 在name或goods_brief中搜索
     search_fields = ('=name', 'goods_brief')
