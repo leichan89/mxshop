@@ -83,10 +83,10 @@ class Goods(models.Model):
     class Meta:
         verbose_name = "商品信息"
         verbose_name_plural = verbose_name
-        # 按照价格升序排序
+        # 按照价格升序排序，如果视图类中设置的默认排序方式，这里的排序就不会生效
         # ordering = ['market_price']
         # 按照价格降序排序
-        ordering = ['-market_price']
+        # ordering = ['-market_price']
 
     def __str__(self):
         return self.name
