@@ -20,7 +20,8 @@ class GoodsCategory(models.Model):
     category_type = models.IntegerField("类目级别", choices=CATEGORY_TYPE, help_text="类目级别")
 
     # 设置models有一个指向自己的外键，父目录可以是该表中的其他行的数据
-    parent_category = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
+    # 在表中对应的字段名称是parent_category_id
+    parent_category = models.ForeignKey("self", on_delete=models.CASCADE, related_name="sub_cat", null=True, blank=True)
 
     is_tab = models.BooleanField("是否导航", default=False, help_text="是否导航")
     add_time = models.DateTimeField("添加时间", default=datetime.now)
@@ -36,6 +37,7 @@ class GoodsCategoryBrand(models.Model):
     """
     某一大类下的宣传商标
     """
+    # 在表goods_goodsbrand中category对应的字段名称是category_id
     category = models.ForeignKey(GoodsCategory, on_delete=models.CASCADE, related_name='brands', null=True, blank=True, verbose_name="商品类目")
     name = models.CharField("品牌名",default="", max_length=30,help_text="品牌名")
     desc = models.TextField("品牌描述",default="", max_length=200,help_text="品牌描述")

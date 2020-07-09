@@ -1,5 +1,5 @@
-from goods.serializers import GoodsSerializer
-from .models import Goods
+from goods.serializers import GoodsSerializer, CategorySerializer
+from .models import Goods, GoodsCategory
 from rest_framework import viewsets, mixins
 from rest_framework import filters
 from rest_framework.pagination import PageNumberPagination
@@ -43,7 +43,7 @@ class GoodsPagination(PageNumberPagination):
 class GoodsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """
     商品列表页
-    如果不继承ListModelMixin的话，就无法将get和商品的列表关联起来，另外还有其中的分页等等，都无法实现
+    如果不继承ListModelMixin的话，就无法将get和商品的列表关联起来，相当于拥有来get方法，另外还有其中的分页等等，都无法实现
     ViewSet类与View类其实几乎是相同的,但提供的是read或update这些操作,而不是get或put 等HTTP动作。
     同时，ViewSet为我们提供了默认的URL结构, 使得我们能更专注于API本身。
     """
@@ -58,10 +58,6 @@ class GoodsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     # 设置filter的类为我们自己定义的类
     filter_class = GoodsFilter
 
-    # 可以通过以下字段进行排序参数orderby=market_price或者orderby=-market_price
-    # orderby可以在setting.py中修改
-    ordering_fields = ('sold_num', 'add_time')
-
     # '^'开始搜索。
     # '='完全匹配。
     # '@'全文搜索。(目前只支持 Django 的 MySQL 后端。)
@@ -69,4 +65,18 @@ class GoodsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     # 默认情况下，搜索参数被命名为 'search'，但这可能会被 SEARCH_PARAM 设置覆盖。
     # name和goods_brief是goods模型中的字段
     # 在name或goods_brief中搜索
-    search_fields = ('=name', 'goods_brief')
+    search_fields = ('=name', 'goods_brief', 'goods_desc')
+
+    # 可以通过以下字段进行排序参数orderby=market_price或者orderby=-market_price
+    # orderby可以在setting.py中修改
+    ordering_fields = ('sold_num', 'shop_price')
+
+
+class CategoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    """
+    list:商品分类别数据\n
+    ListModelMixin:获取所有的数据\n
+    RetrieveModelMixin:可以通过主键查询比如 http://127.0.0.1:8000/categorys/1/
+    """
+    queryset = GoodsCategory.objects.filter(category_type=1)
+    serializer_class = CategorySerializer

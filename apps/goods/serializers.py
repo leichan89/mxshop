@@ -7,9 +7,6 @@ from rest_framework import serializers
 from rest_framework.serializers import Field
 from .models import GoodsCategory, Goods
 from common.tools import Tools
-# from datetime import datetime
-# from pytz import timezone
-# from MxShop.settings import TIME_ZONE
 
 
 class TimestampField(Field):
@@ -29,10 +26,32 @@ class TimestampField(Field):
     #     no_tz = datetime.utcfromtimestamp(timestamp)
     #     return no_tz.astimezone(timezone(TIME_ZONE))
 
-class CategorySerializer(serializers.ModelSerializer):
+class CategorySerializer3(serializers.ModelSerializer):
+    """
+    三级分类
+    """
+    addtime = TimestampField(source='add_time')
+    class Meta:
+        model = GoodsCategory
+        exclude = ['add_time']
 
+class CategorySerializer2(serializers.ModelSerializer):
+    """
+    二级分类
+    """
+    sub_cat = CategorySerializer3(many=True)
+    addtime = TimestampField(source='add_time')
+    class Meta:
+        model = GoodsCategory
+        exclude = ['add_time']
+
+class CategorySerializer(serializers.ModelSerializer):
+    """
+    商品一级类别目录序列化
+    """
+    sub_cat = CategorySerializer2(many=True)
     # 修改时间为时间戳
-    timestamp = TimestampField(source='add_time')
+    addtime = TimestampField(source='add_time')
     class Meta:
         model = GoodsCategory
         # fields = "__all__"
@@ -42,7 +61,7 @@ class GoodsSerializer(serializers.ModelSerializer):
 
     # 外键id对应的category信息
     category = CategorySerializer()
-    timestamp = TimestampField(source='add_time')
+    addtime = TimestampField(source='add_time')
 
     class Meta:
         model = Goods

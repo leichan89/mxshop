@@ -156,6 +156,7 @@ AUTH_USER_MODEL = 'users.UserProfile'
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+# 全局的分页，可以在单个views中自定义，不自定义的话，就默认使用全局的分页
 REST_FRAMEWORK = {
     # 分页
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -163,4 +164,22 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': '10',
     # 指定排序参数的名称
     'ORDERING_PARAM': 'orderby',
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+    }
 }
