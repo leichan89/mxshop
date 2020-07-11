@@ -30,14 +30,37 @@ class GoodsFilter(django_filters.rest_framework.FilterSet):
     def top_category_filter(self, queryset, name, value):
         # Q 对象使用 https://docs.djangoproject.com/zh-hans/3.0/topics/db/queries/
         # 不管当前点击的是一级分类二级分类还是三级分类，都能找到。
-        # SELECT COUNT(*) AS `__count` FROM `goods_goods` INNER JOIN `goods_goodscategory` ON
-        # (`goods_goods`.`category_id` = `goods_goodscategory`.`id`) LEFT OUTER JOIN `goods_goodscategory` T3
-        # ON (`goods_goodscategory`.`parent_category_id` = T3.`id`)
-        # WHERE (`goods_goods`.`category_id` = 7
-        # OR `goods_goodscategory`.`parent_category_id` = 7
-        # OR T3.`parent_category_id` = 7); args=(7, 7, 7)
 
-        # goods表通过category表的id找到响应类别数据，再通过父id找父id，再通过父id的父id找数据
+        # 通过goods表中的category_id查询，只查询category_id为指定值的数据
+        # 查询的是商品直接关联的类别信息
+        # return queryset.filter(Q(category_id=value))
+
+        # 通过外键category在goods_goodscategory表中查找parent_category_id等于指定值的数据
+        # 查询的是商品的category_id对应的父id是指定值的商品，会将父id都一样的商品都查询出来
+        # 二级目录相同的商品都查询出来，既parent_category_id等于指定值
+        # return queryset.filter(Q(category__parent_category_id=value))
+
+        # goods表的外键category通过goods_goodscategory的外键找到对应的id，在通过这个id找这个id的parent_category_id
+
+        # SELECT goods_goods.name , goods_goodscategory.parent_category_id FROM `goods_goods`
+        # INNER JOIN `goods_goodscategory` ON (`goods_goods`.`category_id` = `goods_goodscategory`.`id`)
+        # return queryset.filter(Q(category__parent_category__parent_category_id=value))
+
+        # 查询一级相同，或者二级相同，或者三级相同的类别id
+
+        # 获取商品的目前关联的一级目录
+        # SELECT parent_category_id from goods_goodscategory where id in
+        # (SELECT DISTINCT(parent_category_id) from goods_goodscategory WHERE id in
+        # (SELECT DISTINCT(category_id) FROM `goods_goods`))
+        # 一级目录相同的商品都查询出来:比如parent_category_id=1
+
+        # SELECT goods_goods.name , goods_goodscategory.parent_category_id, T3.parent_category_id FROM `goods_goods`
+        # INNER JOIN `goods_goodscategory` ON (`goods_goods`.`category_id` = `goods_goodscategory`.`id`)
+        # INNER JOIN `goods_goodscategory` T3 ON (`goods_goodscategory`.`parent_category_id` = T3.`id`) ;
+
+        # 解释：先是goods表和goodscategory表inner join，join条件是goods的category_id等于goodscategory表的id，
+        # 可以得到每个商品对应的父id，然后再和goodscategory inner join
+        # join的条件是前面join的父id与goodscategory的id相同，就能得到每个商品的一级id
         return queryset.filter(Q(category_id=value) | Q(category__parent_category_id=value)
                                | Q(category__parent_category__parent_category_id=value))
 

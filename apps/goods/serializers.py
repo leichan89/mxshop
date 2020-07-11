@@ -39,6 +39,8 @@ class CategorySerializer2(serializers.ModelSerializer):
     """
     二级分类
     """
+    # sub_cat 是 GoodsCategory 模型中 parent_category 字段对应的related_name
+    # 在CategorySerializer3中通过 sub_cat（数据库中其实是parent_category_id）查询对应的类别信息
     sub_cat = CategorySerializer3(many=True)
     addtime = TimestampField(source='add_time')
     class Meta:
